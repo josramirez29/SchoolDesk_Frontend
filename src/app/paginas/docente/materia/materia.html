@@ -1,0 +1,29 @@
+<a mat-button routerLink="/docente/materias" class="volver">
+  <mat-icon>arrow_back</mat-icon>
+  Mis materias
+</a>
+
+@if (materia(); as materia) {
+  <h1>{{ materia.nombre }}</h1>
+  <p class="datos">NRC {{ materia.nrc }} · {{ materia.clave }} · Sección {{ materia.seccion }}</p>
+}
+
+<nav mat-tab-nav-bar [tabPanel]="panel" mat-stretch-tabs="false">
+  @for (pestana of pestanas; track pestana.ruta) {
+    <a
+      mat-tab-link
+      [routerLink]="pestana.ruta"
+      routerLinkActive
+      #activa="routerLinkActive"
+      [active]="activa.isActive"
+    >
+      {{ pestana.etiqueta }}
+    </a>
+  }
+</nav>
+
+<mat-tab-nav-panel #panel>
+  <div class="contenido-pestana">
+    <router-outlet />
+  </div>
+</mat-tab-nav-panel>

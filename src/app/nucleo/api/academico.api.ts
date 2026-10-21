@@ -11,6 +11,9 @@ import {
   MateriaEdicion,
   MateriaNueva,
   ResultadoImportacion,
+  Categoria,
+  CategoriaEntrada,
+  Tarea,
 } from './modelos';
 import { subirCsv } from './subir-csv';
 
@@ -77,6 +80,31 @@ export class AcademicoApi {
 
   darDeBaja(nrc: string, matricula: string): Observable<void> {
     return this.http.delete<void>(`${this.url}/materias/${nrc}/alumnos/${matricula}`);
+  }
+
+  // --- Ponderaciones: categorías y tareas (docente titular) ---
+
+  obtenerCategorias(nrc: string): Observable<Categoria[]> {
+    return this.http.get<Categoria[]>(`${this.url}/materias/${nrc}/categorias`);
+  }
+
+  /** Reemplaza la lista completa: los pesos son una regla del conjunto (suman 100). */
+  guardarCategorias(nrc: string, categorias: CategoriaEntrada[]): Observable<Categoria[]> {
+    return this.http.put<Categoria[]>(`${this.url}/materias/${nrc}/categorias`, categorias);
+  }
+
+  crearTarea(nrc: string, categoriaId: number, nombre: string): Observable<Tarea> {
+    return this.http.post<Tarea>(`${this.url}/materias/${nrc}/categorias/${categoriaId}/tareas`, {
+      nombre,
+    });
+  }
+
+  renombrarTarea(nrc: string, tareaId: number, nombre: string): Observable<Tarea> {
+    return this.http.patch<Tarea>(`${this.url}/materias/${nrc}/tareas/${tareaId}`, { nombre });
+  }
+
+  eliminarTarea(nrc: string, tareaId: number): Observable<void> {
+    return this.http.delete<void>(`${this.url}/materias/${nrc}/tareas/${tareaId}`);
   }
 
   // --- Importación (admin) ---

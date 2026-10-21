@@ -1,0 +1,114 @@
+<section>
+  <h2>Categorías y pesos</h2>
+  <p class="nota">
+    Cada categoría tiene un peso; entre todas deben sumar 100 %. Dentro de cada categoría, las
+    tareas se promedian y las que no tienen calificación todavía no cuentan.
+  </p>
+
+  @for (fila of filas.controls; track fila; let i = $index) {
+    <div class="fila" [formGroup]="fila">
+      <mat-form-field appearance="outline" class="nombre">
+        <mat-label>Categoría</mat-label>
+        <input matInput formControlName="nombre" placeholder="Prácticas" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="peso">
+        <mat-label>Peso</mat-label>
+        <input matInput type="number" formControlName="peso" min="0" max="100" step="any" />
+        <span matTextSuffix>%</span>
+      </mat-form-field>
+      <button
+        mat-icon-button
+        type="button"
+        (click)="quitarCategoria(i)"
+        aria-label="Quitar categoría"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  }
+
+  <button mat-stroked-button type="button" (click)="agregarCategoria()">
+    <mat-icon>add</mat-icon>
+    Agregar categoría
+  </button>
+
+  <p class="suma" [class.correcta]="suma() === 100" role="status">
+    Suma: {{ suma() }} %
+    @if (suma() !== 100) {
+      — debe ser exactamente 100 %
+    }
+  </p>
+
+  <div class="acciones">
+    <button mat-button type="button" (click)="descartar()" [disabled]="!filas.dirty">
+      Descartar cambios
+    </button>
+    <button mat-flat-button type="button" (click)="guardar()" [disabled]="!puedeGuardar()">
+      {{ guardando() ? 'Guardando…' : 'Guardar ponderaciones' }}
+    </button>
+  </div>
+</section>
+
+<section>
+  <h2>Tareas</h2>
+  @if (categorias().length === 0) {
+    <p class="nota">Primero guarda al menos una categoría para poder agregarle tareas.</p>
+  } @else if (filas.dirty) {
+    <p class="nota">Las categorías nuevas aparecerán aquí después de guardarlas.</p>
+  }
+
+  <div class="cuadricula">
+    @for (categoria of categorias(); track categoria.id) {
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-card-title>{{ categoria.nombre }}</mat-card-title>
+          <mat-card-subtitle>{{ categoria.peso }} % de la calificación</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="tareas">
+            @for (tarea of categoria.tareas; track tarea.id) {
+              <li>
+                @if (tareaEnEdicion() === tarea.id) {
+                  <input
+                    class="renombrar"
+                    [formControl]="nombreEnEdicion"
+                    (keydown.enter)="renombrar(tarea)"
+                    (keydown.escape)="tareaEnEdicion.set(null)"
+                    aria-label="Nuevo nombre de la tarea"
+                  />
+                  <button mat-icon-button (click)="renombrar(tarea)" aria-label="Guardar nombre">
+                    <mat-icon>check</mat-icon>
+                  </button>
+                } @else {
+                  <span class="nombre-tarea">{{ tarea.nombre }}</span>
+                  <button mat-icon-button (click)="empezarARenombrar(tarea)" aria-label="Renombrar">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button
+                    mat-icon-button
+                    (click)="eliminarTarea(tarea)"
+                    aria-label="Eliminar tarea"
+                  >
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
+              </li>
+            } @empty {
+              <li class="nota">Sin tareas todavía.</li>
+            }
+          </ul>
+
+          <div class="nueva-tarea">
+            <input
+              #campo
+              placeholder="Nueva tarea, p. ej. Práctica 4"
+              (keydown.enter)="crearTarea(categoria, campo)"
+              aria-label="Nombre de la nueva tarea"
+            />
+            <button mat-stroked-button (click)="crearTarea(categoria, campo)">Agregar</button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    }
+  </div>
+</section>

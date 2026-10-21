@@ -1,0 +1,84 @@
+section {
+  margin-bottom: 32px;
+}
+
+h2 {
+  margin: 0 0 4px;
+  font: var(--mat-sys-title-large);
+}
+
+.nota {
+  max-width: 640px;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.fila {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 560px;
+
+  .nombre {
+    flex: 1;
+  }
+
+  .peso {
+    width: 120px;
+  }
+}
+
+.suma {
+  margin: 16px 0;
+  font: var(--mat-sys-title-small);
+  color: var(--mat-sys-error);
+
+  &.correcta {
+    color: var(--mat-sys-primary);
+  }
+}
+
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.cuadricula {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.tareas {
+  margin: 8px 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+  }
+}
+
+.nombre-tarea {
+  flex: 1;
+}
+
+.renombrar,
+.nueva-tarea input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--mat-sys-outline);
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.nueva-tarea {
+  display: flex;
+  gap: 8px;
+}

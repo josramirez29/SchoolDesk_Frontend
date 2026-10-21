@@ -1,0 +1,23 @@
+<h1>Mis materias</h1>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else if (materias().length === 0) {
+  <p class="vacio">Todavía no tienes materias asignadas. Pídele al administrador que te asigne.</p>
+}
+
+<div class="cuadricula">
+  @for (materia of materias(); track materia.nrc) {
+    <a class="tarjeta" [routerLink]="[materia.nrc]">
+      <mat-card appearance="outlined">
+        <mat-card-header>
+          <mat-icon mat-card-avatar>menu_book</mat-icon>
+          <mat-card-title>{{ materia.nombre }}</mat-card-title>
+          <mat-card-subtitle>
+            NRC {{ materia.nrc }} · {{ materia.clave }} · Sección {{ materia.seccion }}
+          </mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+    </a>
+  }
+</div>

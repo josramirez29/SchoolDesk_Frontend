@@ -99,3 +99,24 @@ export interface ErrorDeFila {
   fila: number;
   mensaje: string;
 }
+
+// --- Ponderaciones (docente) ---
+
+export interface Tarea {
+  id: number;
+  nombre: string;
+}
+
+export interface Categoria {
+  id: number;
+  nombre: string;
+  peso: number; // porcentaje; los de una materia suman 100
+  tareas: Tarea[];
+}
+
+/** Una categoría de la lista completa que se guarda. Sin id es nueva. */
+export interface CategoriaEntrada {
+  id: number | null;
+  nombre: string;
+  peso: number;
+}
