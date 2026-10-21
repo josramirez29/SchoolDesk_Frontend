@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 
+import { sinCambiosPendientesGuard } from '../../compartido/cambios-pendientes';
 import { Layout, OpcionMenu } from '../../compartido/layout/layout';
 
 const OPCIONES: OpcionMenu[] = [
@@ -29,6 +30,13 @@ export default [
             path: 'ponderaciones',
             loadComponent: () =>
               import('./materia/ponderaciones/ponderaciones').then((m) => m.Ponderaciones),
+          },
+          {
+            path: 'calificaciones',
+            loadComponent: () =>
+              import('./materia/calificaciones/calificaciones').then((m) => m.Calificaciones),
+            // Avisa antes de salir si hay calificaciones capturadas sin guardar.
+            canDeactivate: [sinCambiosPendientesGuard],
           },
         ],
       },

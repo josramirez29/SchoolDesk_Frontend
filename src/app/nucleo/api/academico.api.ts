@@ -11,8 +11,10 @@ import {
   MateriaEdicion,
   MateriaNueva,
   ResultadoImportacion,
+  CalificacionEntrada,
   Categoria,
   CategoriaEntrada,
+  Concentrado,
   Tarea,
 } from './modelos';
 import { subirCsv } from './subir-csv';
@@ -105,6 +107,17 @@ export class AcademicoApi {
 
   eliminarTarea(nrc: string, tareaId: number): Observable<void> {
     return this.http.delete<void>(`${this.url}/materias/${nrc}/tareas/${tareaId}`);
+  }
+
+  // --- Calificaciones (docente titular) ---
+
+  obtenerConcentrado(nrc: string): Observable<Concentrado> {
+    return this.http.get<Concentrado>(`${this.url}/materias/${nrc}/calificaciones`);
+  }
+
+  /** Guarda varias celdas a la vez (todas o ninguna) y devuelve el concentrado actualizado. */
+  capturarCalificaciones(nrc: string, entradas: CalificacionEntrada[]): Observable<Concentrado> {
+    return this.http.put<Concentrado>(`${this.url}/materias/${nrc}/calificaciones`, entradas);
   }
 
   // --- Importación (admin) ---

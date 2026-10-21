@@ -37,7 +37,10 @@ export class MateriaDocente implements OnInit {
   readonly nrc = input.required<string>();
   readonly materia = signal<Materia | null>(null);
 
-  readonly pestanas: Pestana[] = [{ etiqueta: 'Ponderaciones', ruta: 'ponderaciones' }];
+  readonly pestanas: Pestana[] = [
+    { etiqueta: 'Ponderaciones', ruta: 'ponderaciones' },
+    { etiqueta: 'Calificaciones', ruta: 'calificaciones' },
+  ];
 
   ngOnInit(): void {
     this.api.obtenerMateria(this.nrc()).subscribe((materia) => this.materia.set(materia));

@@ -1,0 +1,116 @@
+.vacio,
+.nota {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.nota {
+  margin: 0;
+  max-width: 560px;
+  font: var(--mat-sys-body-small);
+}
+
+.barra-acciones {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.espacio {
+  flex: 1;
+}
+
+.aviso-invalidas {
+  color: var(--mat-sys-error);
+  font: var(--mat-sys-label-large);
+}
+
+.contenedor-tabla {
+  overflow-x: auto;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 8px;
+}
+
+.concentrado {
+  border-collapse: collapse;
+  font: var(--mat-sys-body-medium);
+
+  th,
+  td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--mat-sys-outline-variant);
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  thead th {
+    background: var(--mat-sys-surface-container);
+    font: var(--mat-sys-label-large);
+  }
+
+  .categoria {
+    border-left: 2px solid var(--mat-sys-outline-variant);
+  }
+
+  .tarea {
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// La columna del alumno se queda fija al desplazarse a la derecha.
+.col-alumno {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  min-width: 220px;
+  text-align: left !important;
+  background: var(--mat-sys-surface);
+}
+
+thead .col-alumno {
+  background: var(--mat-sys-surface-container);
+}
+
+.matricula {
+  display: block;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.celda {
+  width: 56px;
+  padding: 6px;
+  border: 1px solid var(--mat-sys-outline-variant);
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+
+  &.cambiada {
+    border-color: var(--mat-sys-primary);
+    background: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  &.invalida {
+    border-color: var(--mat-sys-error);
+    background: var(--mat-sys-error-container);
+    color: var(--mat-sys-on-error-container);
+  }
+}
+
+.promedio-categoria {
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.col-promedio {
+  font-weight: 500;
+}
+
+.reprobado {
+  color: var(--mat-sys-error);
+}

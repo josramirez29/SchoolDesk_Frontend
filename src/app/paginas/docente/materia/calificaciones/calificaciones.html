@@ -1,0 +1,92 @@
+@if (concentrado(); as concentrado) {
+  @if (concentrado.categorias.length === 0) {
+    <p class="vacio">
+      Primero configura las
+      <a routerLink="../ponderaciones">ponderaciones</a>
+      de la materia: las categorías y sus tareas son las columnas del concentrado.
+    </p>
+  } @else if (concentrado.alumnos.length === 0) {
+    <p class="vacio">Todavía no hay alumnos inscritos en esta materia.</p>
+  } @else {
+    <div class="barra-acciones">
+      <p class="nota">
+        Escribe puntos de 0 a 100. Deja la celda vacía si la tarea aún no se califica: así no cuenta
+        en el promedio. Los promedios se recalculan al guardar.
+      </p>
+      <span class="espacio"></span>
+      @if (hayInvalidas()) {
+        <span class="aviso-invalidas">Hay celdas fuera de 0–100</span>
+      }
+      <button mat-button (click)="descartar()" [disabled]="!hayCambios()">Descartar</button>
+      <button mat-flat-button (click)="guardar()" [disabled]="!puedeGuardar()">
+        <mat-icon>save</mat-icon>
+        {{
+          guardando()
+            ? 'Guardando…'
+            : totalCambios()
+              ? 'Guardar ' + totalCambios() + ' cambio(s)'
+              : 'Guardar'
+        }}
+      </button>
+    </div>
+
+    <!-- Desplazamiento horizontal para materias con muchas tareas. -->
+    <div class="contenedor-tabla">
+      <table class="concentrado">
+        <thead>
+          <tr>
+            <th rowspan="2" class="col-alumno">Alumno</th>
+            @for (categoria of concentrado.categorias; track categoria.id) {
+              <th [attr.colspan]="categoria.tareas.length + 1" class="categoria">
+                {{ categoria.nombre }} ({{ categoria.peso }} %)
+              </th>
+            }
+            <th rowspan="2" class="col-promedio">Promedio</th>
+          </tr>
+          <tr>
+            @for (categoria of concentrado.categorias; track categoria.id) {
+              @for (tarea of categoria.tareas; track tarea.id) {
+                <th class="tarea">{{ tarea.nombre }}</th>
+              }
+              <th class="promedio-categoria">Prom.</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (fila of concentrado.alumnos; track fila.matricula) {
+            <tr>
+              <th scope="row" class="col-alumno">
+                {{ fila.apellidos }}, {{ fila.nombre }}
+                <span class="matricula">{{ fila.matricula }}</span>
+              </th>
+              @for (categoria of concentrado.categorias; track categoria.id) {
+                @for (tarea of categoria.tareas; track tarea.id) {
+                  <td>
+                    <input
+                      type="text"
+                      inputmode="decimal"
+                      class="celda"
+                      [class.cambiada]="estaCambiada(fila, tarea.id)"
+                      [class.invalida]="esInvalida(fila, tarea.id)"
+                      [value]="valorDeCelda(fila, tarea.id)"
+                      (input)="alEscribir(fila, tarea.id, $any($event.target).value)"
+                      [attr.aria-label]="tarea.nombre + ' de ' + fila.nombre + ' ' + fila.apellidos"
+                    />
+                  </td>
+                }
+                <td class="promedio-categoria">
+                  {{ fila.promedios_categoria[categoria.id] | number: '1.0-2' }}
+                </td>
+              }
+              <td class="col-promedio" [class.reprobado]="reprobado(fila.promedio)">
+                {{ fila.promedio === null ? '—' : (fila.promedio | number: '1.1-1') }}
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+} @else {
+  <mat-progress-bar mode="indeterminate" />
+}

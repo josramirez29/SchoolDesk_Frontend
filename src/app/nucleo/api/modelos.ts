@@ -120,3 +120,27 @@ export interface CategoriaEntrada {
   nombre: string;
   peso: number;
 }
+
+// --- Calificaciones (docente) ---
+
+/** Una fila del concentrado. Las llaves de los objetos son ids de tarea o de categoría. */
+export interface FilaConcentrado {
+  matricula: string;
+  nombre: string;
+  apellidos: string;
+  puntos: Record<string, number | null>; // null = sin calificar
+  promedios_categoria: Record<string, number | null>; // 0–100
+  promedio: number | null; // 0–10, calculado por el backend
+}
+
+export interface Concentrado {
+  categorias: Categoria[]; // las columnas
+  alumnos: FilaConcentrado[]; // las filas
+}
+
+/** Una celda que cambió. `puntos: null` regresa la tarea a "sin calificar". */
+export interface CalificacionEntrada {
+  matricula: string;
+  tarea_id: number;
+  puntos: number | null;
+}
