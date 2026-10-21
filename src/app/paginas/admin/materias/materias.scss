@@ -1,0 +1,10 @@
+@use '../../../compartido/estilos/lista';
+
+.fila-clicable {
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--mat-sys-surface-container-high);
+  }
+}

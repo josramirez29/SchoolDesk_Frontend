@@ -26,6 +26,14 @@ export default [
         loadComponent: () => import('./docentes/docentes').then((m) => m.Docentes),
       },
       {
+        path: 'materias',
+        loadComponent: () => import('./materias/materias').then((m) => m.Materias),
+      },
+      {
+        path: 'materias/:nrc',
+        loadComponent: () => import('./materias/detalle-materia').then((m) => m.DetalleMateria),
+      },
+      {
         path: 'contrasena',
         loadComponent: () =>
           import('../cuenta/cambiar-contrasena').then((m) => m.CambiarContrasena),

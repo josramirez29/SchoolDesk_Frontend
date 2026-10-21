@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>{{ esNueva ? 'Nueva materia' : 'Editar materia' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formulario" id="formulario-materia" (ngSubmit)="guardar()" class="formulario">
+    <mat-form-field appearance="outline">
+      <mat-label>NRC</mat-label>
+      <input matInput formControlName="nrc" inputmode="numeric" />
+      @if (formulario.controls.nrc.hasError('pattern')) {
+        <mat-error>Deben ser 5 dígitos</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Clave</mat-label>
+      <input matInput formControlName="clave" placeholder="ITIS 702" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Sección</mat-label>
+      <input matInput formControlName="seccion" inputmode="numeric" />
+      @if (formulario.controls.seccion.hasError('pattern')) {
+        <mat-error>Deben ser 3 dígitos, p. ej. 001</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Docente</mat-label>
+      <mat-select formControlName="num_empleado_docente">
+        @for (docente of docentesActivos(); track docente.usuario) {
+          <mat-option [value]="docente.usuario">
+            {{ docente.apellidos }}, {{ docente.nombre }} ({{ docente.usuario }})
+          </mat-option>
+        }
+      </mat-select>
+      @if (formulario.controls.num_empleado_docente.hasError('required')) {
+        <mat-error>Elige al docente titular</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button type="submit" form="formulario-materia" [disabled]="guardando()">
+    {{ guardando() ? 'Guardando…' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

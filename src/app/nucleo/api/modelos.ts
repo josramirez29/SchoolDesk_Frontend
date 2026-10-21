@@ -66,3 +66,18 @@ export interface MateriaResumen {
 export interface AlumnoDetalle extends Alumno {
   materias: MateriaResumen[];
 }
+
+export interface Materia extends MateriaResumen {
+  num_empleado_docente: string;
+}
+
+export interface MateriaNueva {
+  nrc: string;
+  clave: string;
+  nombre: string;
+  seccion: string;
+  num_empleado_docente: string;
+}
+
+/** Edición parcial. El NRC no se edita: es el identificador que usan los demás servicios. */
+export type MateriaEdicion = Partial<Omit<MateriaNueva, 'nrc'>>;

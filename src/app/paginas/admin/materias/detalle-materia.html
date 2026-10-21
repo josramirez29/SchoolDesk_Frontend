@@ -1,0 +1,74 @@
+<a mat-button routerLink="/admin/materias" class="volver">
+  <mat-icon>arrow_back</mat-icon>
+  Materias
+</a>
+
+@if (materia(); as materia) {
+  <header class="encabezado">
+    <div>
+      <h1>{{ materia.nombre }}</h1>
+      <p class="datos">
+        NRC {{ materia.nrc }} · {{ materia.clave }} · Sección {{ materia.seccion }} · Docente:
+        {{ materia.nombre_docente }}
+      </p>
+    </div>
+    <div class="acciones">
+      <button mat-stroked-button (click)="editar()">
+        <mat-icon>edit</mat-icon>
+        Editar
+      </button>
+      <button mat-stroked-button (click)="eliminar()">
+        <mat-icon>delete</mat-icon>
+        Eliminar
+      </button>
+    </div>
+  </header>
+
+  <h2>Alumnos inscritos ({{ inscritos().length }})</h2>
+
+  <mat-form-field appearance="outline" class="buscador">
+    <mat-label>Inscribir alumno: escribe su nombre o matrícula</mat-label>
+    <input matInput [formControl]="buscador" [matAutocomplete]="opciones" />
+    <mat-icon matSuffix>person_add</mat-icon>
+    <mat-autocomplete
+      #opciones="matAutocomplete"
+      [displayWith]="mostrarAlumno"
+      (optionSelected)="inscribir($event.option.value)"
+    >
+      @for (alumno of sugerencias(); track alumno.matricula) {
+        <mat-option [value]="alumno">
+          {{ alumno.apellidos }}, {{ alumno.nombre }} ({{ alumno.matricula }})
+        </mat-option>
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <table mat-table [dataSource]="inscritos()" class="tabla">
+    <ng-container matColumnDef="matricula">
+      <th mat-header-cell *matHeaderCellDef>Matrícula</th>
+      <td mat-cell *matCellDef="let alumno">{{ alumno.matricula }}</td>
+    </ng-container>
+    <ng-container matColumnDef="apellidos">
+      <th mat-header-cell *matHeaderCellDef>Apellidos</th>
+      <td mat-cell *matCellDef="let alumno">{{ alumno.apellidos }}</td>
+    </ng-container>
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef>Nombre</th>
+      <td mat-cell *matCellDef="let alumno">{{ alumno.nombre }}</td>
+    </ng-container>
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let alumno">
+        <button mat-icon-button (click)="darDeBaja(alumno)" aria-label="Dar de baja de la materia">
+          <mat-icon>person_remove</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let fila; columns: columnas"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="sin-datos" [attr.colspan]="columnas.length">Todavía no hay alumnos inscritos</td>
+    </tr>
+  </table>
+}
