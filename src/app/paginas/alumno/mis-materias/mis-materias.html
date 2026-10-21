@@ -1,0 +1,29 @@
+<h1>Mis materias</h1>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+} @else if (materias().length === 0) {
+  <p class="vacio">Todavía no estás inscrito en ninguna materia.</p>
+}
+
+<div class="lista">
+  @for (materia of materias(); track materia.nrc) {
+    <a class="tarjeta" [routerLink]="[materia.nrc]">
+      <mat-card appearance="outlined">
+        <mat-card-content class="contenido">
+          <div class="datos">
+            <span class="nombre">{{ materia.nombre }}</span>
+            <span class="detalle">{{ materia.nombre_docente }}</span>
+            <span class="detalle">NRC {{ materia.nrc }} · Sección {{ materia.seccion }}</span>
+          </div>
+          <div class="promedio" [class.reprobado]="reprobado(materia.promedio)">
+            <span class="valor">
+              {{ materia.promedio === null ? '—' : (materia.promedio | number: '1.1-1') }}
+            </span>
+            <span class="etiqueta">promedio</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </a>
+  }
+</div>

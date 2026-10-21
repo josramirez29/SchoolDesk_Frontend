@@ -13,8 +13,15 @@ export default [
     component: Layout,
     data: { opciones: OPCIONES }, // llega al Layout como input
     children: [
-      // Provisional: cada pantalla de esta sección se agrega en su propio commit.
-      { path: '', pathMatch: 'full', redirectTo: 'contrasena' },
+      { path: '', pathMatch: 'full', redirectTo: 'materias' },
+      {
+        path: 'materias',
+        loadComponent: () => import('./mis-materias/mis-materias').then((m) => m.MisMateriasAlumno),
+      },
+      {
+        path: 'materias/:nrc',
+        loadComponent: () => import('./materia/materia-alumno').then((m) => m.MateriaAlumno),
+      },
       {
         path: 'contrasena',
         loadComponent: () =>

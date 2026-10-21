@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { SIN_AVISO_DE_ERROR } from '../errores/errores';
-import { RegistroAsistencia, SesionDetalle, SesionResumen } from './modelos';
+import { MiAsistencia, RegistroAsistencia, SesionDetalle, SesionResumen } from './modelos';
 
 /** Llamadas a servicio-asistencia a través del gateway (/api/asistencia/...). */
 @Injectable({ providedIn: 'root' })
@@ -40,5 +40,16 @@ export class AsistenciaApi {
       { token },
       { context },
     );
+  }
+
+  // --- Alumno ---
+
+  /**
+   * Sin aviso automático: si asistencia no responde, la pantalla del alumno muestra
+   * sus calificaciones de todas formas y avisa solo en la sección de asistencia.
+   */
+  miAsistencia(nrc: string): Observable<MiAsistencia> {
+    const context = new HttpContext().set(SIN_AVISO_DE_ERROR, true);
+    return this.http.get<MiAsistencia>(`${this.url}/mi-asistencia`, { params: { nrc }, context });
   }
 }

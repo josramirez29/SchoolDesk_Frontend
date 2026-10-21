@@ -1,0 +1,88 @@
+<a mat-button routerLink="/alumno/materias" class="volver">
+  <mat-icon>arrow_back</mat-icon>
+  Mis materias
+</a>
+
+@if (calificaciones(); as calificaciones) {
+  <header class="encabezado">
+    <div>
+      <h1>{{ calificaciones.materia.nombre }}</h1>
+      <p class="detalle">
+        {{ calificaciones.materia.nombre_docente }} · NRC {{ calificaciones.materia.nrc }}
+      </p>
+    </div>
+    <div class="promedio" [class.reprobado]="reprobado(calificaciones.promedio)">
+      <span class="valor">
+        {{ calificaciones.promedio === null ? '—' : (calificaciones.promedio | number: '1.1-1') }}
+      </span>
+      <span class="etiqueta">promedio actual</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>Calificaciones</h2>
+    <p class="nota">
+      Las tareas sin calificar todavía no cuentan en tu promedio. Cada tarea vale de 0 a 100 puntos.
+    </p>
+    @for (categoria of calificaciones.categorias; track categoria.id) {
+      <mat-card appearance="outlined" class="categoria">
+        <mat-card-header>
+          <mat-card-title>{{ categoria.nombre }}</mat-card-title>
+          <mat-card-subtitle>
+            Vale {{ categoria.peso }} % · Promedio:
+            {{
+              categoria.promedio === null
+                ? 'sin calificaciones'
+                : (categoria.promedio | number: '1.0-2')
+            }}
+          </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          @for (tarea of categoria.tareas; track tarea.id) {
+            <div class="tarea">
+              <span>{{ tarea.nombre }}</span>
+              <span class="puntos" [class.sin-calificar]="tarea.puntos === null">
+                {{ tarea.puntos === null ? 'Sin calificar' : (tarea.puntos | number: '1.0-2') }}
+              </span>
+            </div>
+          } @empty {
+            <p class="nota">Todavía no hay tareas en esta categoría.</p>
+          }
+        </mat-card-content>
+      </mat-card>
+    } @empty {
+      <p class="nota">Tu docente todavía no configura las calificaciones de esta materia.</p>
+    }
+  </section>
+} @else {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<section>
+  <h2>Asistencia</h2>
+  @if (asistencia(); as asistencia) {
+    <div class="conteos">
+      <span>{{ asistencia.presentes }} presente(s)</span>
+      <span>{{ asistencia.retardos }} retardo(s)</span>
+      <span>{{ asistencia.faltas }} falta(s)</span>
+    </div>
+    @for (sesion of asistencia.sesiones; track sesion.sesion_id) {
+      <div class="sesion">
+        <span>{{ sesion.iniciada_en | date: 'EEE d MMM, HH:mm' }}</span>
+        <!-- La clase (presente, retardo, falta, en_curso) da el color de la etiqueta. -->
+        <span class="estado" [class]="sesion.estado.toLowerCase()">
+          {{ textoDelEstado(sesion.estado) }}
+        </span>
+      </div>
+    } @empty {
+      <p class="nota">Todavía no hay sesiones de asistencia en esta materia.</p>
+    }
+  } @else if (asistenciaNoDisponible()) {
+    <p class="aviso" role="status">
+      <mat-icon>cloud_off</mat-icon>
+      No se pudo cargar tu asistencia en este momento. Tus calificaciones sí están al día.
+    </p>
+  } @else {
+    <mat-progress-bar mode="indeterminate" />
+  }
+</section>

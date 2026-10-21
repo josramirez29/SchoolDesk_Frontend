@@ -7,15 +7,17 @@ import {
   Alumno,
   AlumnoDetalle,
   AlumnoNuevo,
-  Materia,
-  MateriaEdicion,
-  MateriaNueva,
-  ResultadoImportacion,
   CalificacionEntrada,
   Categoria,
   CategoriaEntrada,
   Concentrado,
+  Materia,
+  MateriaEdicion,
+  MateriaNueva,
+  MiMateria,
+  MisCalificaciones,
   ReporteMateria,
+  ResultadoImportacion,
   Tarea,
 } from './modelos';
 import { subirCsv } from './subir-csv';
@@ -126,6 +128,16 @@ export class AcademicoApi {
   /** Calificaciones de academico + asistencia de servicio-asistencia, en un solo reporte. */
   obtenerReporte(nrc: string): Observable<ReporteMateria> {
     return this.http.get<ReporteMateria>(`${this.url}/materias/${nrc}/reporte`);
+  }
+
+  // --- Vista del alumno (la matrícula sale del token, nunca de la URL) ---
+
+  misMaterias(): Observable<MiMateria[]> {
+    return this.http.get<MiMateria[]>(`${this.url}/mis-materias`);
+  }
+
+  misCalificaciones(nrc: string): Observable<MisCalificaciones> {
+    return this.http.get<MisCalificaciones>(`${this.url}/mis-materias/${nrc}/calificaciones`);
   }
 
   // --- Importación (admin) ---

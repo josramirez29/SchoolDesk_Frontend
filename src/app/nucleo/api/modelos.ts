@@ -203,3 +203,39 @@ export interface ReporteMateria {
   resumen: ResumenGrupo;
   alumnos: FilaReporte[];
 }
+
+// --- Vista del alumno ---
+
+export interface MiMateria extends MateriaResumen {
+  promedio: number | null; // 0–10, null si aún no tiene calificaciones
+}
+
+export interface MiTarea {
+  id: number;
+  nombre: string;
+  puntos: number | null; // null = sin calificar
+}
+
+export interface MiCategoria {
+  id: number;
+  nombre: string;
+  peso: number;
+  promedio: number | null; // 0–100
+  tareas: MiTarea[];
+}
+
+export interface MisCalificaciones {
+  materia: MateriaResumen;
+  promedio: number | null;
+  categorias: MiCategoria[];
+}
+
+export type EstadoMiAsistencia = 'PRESENTE' | 'RETARDO' | 'FALTA' | 'EN_CURSO';
+
+export interface MiAsistencia {
+  nrc: string;
+  presentes: number;
+  retardos: number;
+  faltas: number;
+  sesiones: { sesion_id: number; iniciada_en: string; estado: EstadoMiAsistencia }[];
+}
