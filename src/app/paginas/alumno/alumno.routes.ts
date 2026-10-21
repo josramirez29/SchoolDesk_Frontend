@@ -23,6 +23,10 @@ export default [
         loadComponent: () => import('./materia/materia-alumno').then((m) => m.MateriaAlumno),
       },
       {
+        path: 'materias/:nrc/qr',
+        loadComponent: () => import('./qr/mi-qr').then((m) => m.MiQr),
+      },
+      {
         path: 'contrasena',
         loadComponent: () =>
           import('../cuenta/cambiar-contrasena').then((m) => m.CambiarContrasena),

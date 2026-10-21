@@ -4,7 +4,13 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { SIN_AVISO_DE_ERROR } from '../errores/errores';
-import { MiAsistencia, RegistroAsistencia, SesionDetalle, SesionResumen } from './modelos';
+import {
+  MiAsistencia,
+  QrGenerado,
+  RegistroAsistencia,
+  SesionDetalle,
+  SesionResumen,
+} from './modelos';
 
 /** Llamadas a servicio-asistencia a través del gateway (/api/asistencia/...). */
 @Injectable({ providedIn: 'root' })
@@ -51,5 +57,11 @@ export class AsistenciaApi {
   miAsistencia(nrc: string): Observable<MiAsistencia> {
     const context = new HttpContext().set(SIN_AVISO_DE_ERROR, true);
     return this.http.get<MiAsistencia>(`${this.url}/mi-asistencia`, { params: { nrc }, context });
+  }
+
+  /** Sin aviso automático: la pantalla del QR explica cada caso (sin sesión, ya registrado...). */
+  generarQr(nrc: string): Observable<QrGenerado> {
+    const context = new HttpContext().set(SIN_AVISO_DE_ERROR, true);
+    return this.http.post<QrGenerado>(`${this.url}/qr`, { nrc }, { context });
   }
 }

@@ -239,3 +239,10 @@ export interface MiAsistencia {
   faltas: number;
   sesiones: { sesion_id: number; iniciada_en: string; estado: EstadoMiAsistencia }[];
 }
+
+/** Token de un solo uso que el alumno muestra como QR; el backend lo borra al escanearlo. */
+export interface QrGenerado {
+  token: string;
+  segundos_de_vida: number;
+  sesion_id: number;
+}

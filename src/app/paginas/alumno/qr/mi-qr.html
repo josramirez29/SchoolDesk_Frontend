@@ -1,0 +1,58 @@
+<a mat-button routerLink=".." class="volver">
+  <mat-icon>arrow_back</mat-icon>
+  Volver a la materia
+</a>
+
+<div class="pantalla">
+  <h1>Mi QR de asistencia</h1>
+  <p class="detalle">NRC {{ nrc() }}</p>
+
+  <!-- Con @let + @switch, Angular sabe qué campos tiene cada caso (p. ej. `qr` solo en 'mostrando'). -->
+  @let actual = estado();
+  @switch (actual.tipo) {
+    @case ('cargando') {
+      <mat-spinner diameter="48" />
+    }
+
+    @case ('mostrando') {
+      <!-- Siempre negro sobre blanco, aunque el tema sea oscuro: la cámara lo lee mejor. -->
+      <div class="marco">
+        <qrcode
+          [qrdata]="actual.qr.token"
+          [width]="260"
+          [margin]="2"
+          errorCorrectionLevel="M"
+          colorDark="#000000"
+          colorLight="#ffffff"
+          ariaLabel="Código QR de asistencia"
+        />
+      </div>
+      <p class="instruccion">Muéstraselo a tu docente para que lo escanee.</p>
+      <p class="detalle" aria-live="polite">Se renueva en {{ segundosParaRenovar() }} s</p>
+    }
+
+    @case ('registrado') {
+      <div class="mensaje exito" role="status">
+        <mat-icon>check_circle</mat-icon>
+        <p>Ya tienes asistencia en esta sesión.</p>
+      </div>
+      <a mat-flat-button routerLink="..">Ver mi asistencia</a>
+    }
+
+    @case ('sin-sesion') {
+      <div class="mensaje" role="status">
+        <mat-icon>schedule</mat-icon>
+        <p>Tu docente todavía no abre la asistencia de esta materia.</p>
+      </div>
+      <button mat-flat-button (click)="empezar()">Intentar de nuevo</button>
+    }
+
+    @case ('error') {
+      <div class="mensaje problema" role="alert">
+        <mat-icon>error</mat-icon>
+        <p>{{ actual.mensaje }}</p>
+      </div>
+      <button mat-flat-button (click)="empezar()">Intentar de nuevo</button>
+    }
+  }
+</div>
