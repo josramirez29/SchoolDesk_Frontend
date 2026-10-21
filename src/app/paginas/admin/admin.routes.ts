@@ -16,8 +16,15 @@ export default [
     component: Layout,
     data: { opciones: OPCIONES }, // llega al Layout como input
     children: [
-      // Provisional: cada pantalla de esta sección se agrega en su propio commit.
-      { path: '', pathMatch: 'full', redirectTo: 'contrasena' },
+      { path: '', pathMatch: 'full', redirectTo: 'alumnos' },
+      {
+        path: 'alumnos',
+        loadComponent: () => import('./alumnos/alumnos').then((m) => m.Alumnos),
+      },
+      {
+        path: 'docentes',
+        loadComponent: () => import('./docentes/docentes').then((m) => m.Docentes),
+      },
       {
         path: 'contrasena',
         loadComponent: () =>

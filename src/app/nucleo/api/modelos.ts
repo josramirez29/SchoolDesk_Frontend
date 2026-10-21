@@ -24,3 +24,45 @@ export interface RespuestaLogin {
   tipo_token: string;
   usuario: Usuario;
 }
+
+/** Para crear una cuenta de ADMIN o DOCENTE (las de alumno se crean desde academico). */
+export interface UsuarioNuevo {
+  usuario: string;
+  nombre: string;
+  apellidos: string;
+  email: string;
+  rol: Rol;
+}
+
+/** Edición parcial: solo se cambian los campos que se manden. */
+export interface UsuarioEdicion {
+  nombre?: string;
+  apellidos?: string;
+  email?: string;
+  activo?: boolean;
+  restablecer_contrasena?: boolean;
+}
+
+// --- servicio-academico ---
+
+export interface Alumno {
+  matricula: string;
+  nombre: string;
+  apellidos: string;
+}
+
+export interface AlumnoNuevo extends Alumno {
+  email: string; // no se guarda en academico: se manda a auth para crear la cuenta
+}
+
+export interface MateriaResumen {
+  nrc: string;
+  clave: string;
+  nombre: string;
+  seccion: string;
+  nombre_docente: string;
+}
+
+export interface AlumnoDetalle extends Alumno {
+  materias: MateriaResumen[];
+}

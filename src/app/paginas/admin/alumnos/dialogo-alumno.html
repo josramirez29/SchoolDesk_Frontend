@@ -1,0 +1,71 @@
+<h2 mat-dialog-title>{{ esNuevo ? 'Nuevo alumno' : 'Editar alumno' }}</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="formulario" id="formulario-alumno" (ngSubmit)="guardar()" class="formulario">
+    <mat-form-field appearance="outline">
+      <mat-label>Matrícula</mat-label>
+      <input matInput formControlName="matricula" inputmode="numeric" />
+      @if (formulario.controls.matricula.hasError('pattern')) {
+        <mat-error>Deben ser 9 dígitos</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="nombre" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Apellidos</mat-label>
+      <input matInput formControlName="apellidos" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Correo</mat-label>
+      <input matInput formControlName="email" type="email" />
+      @if (formulario.controls.email.hasError('email')) {
+        <mat-error>El correo no es válido</mat-error>
+      }
+    </mat-form-field>
+  </form>
+
+  @if (esNuevo) {
+    <p class="nota">Su contraseña inicial será su matrícula.</p>
+  }
+
+  @if (cuenta(); as cuenta) {
+    <h3>Cuenta</h3>
+    <p>
+      Estado:
+      <strong [class.estado-inactivo]="!cuenta.activo">
+        {{ cuenta.activo ? 'Activa' : 'Desactivada' }}
+      </strong>
+    </p>
+    <div class="acciones-cuenta">
+      <button mat-stroked-button type="button" (click)="cambiarEstadoDeCuenta()">
+        {{ cuenta.activo ? 'Desactivar cuenta' : 'Reactivar cuenta' }}
+      </button>
+      <button mat-stroked-button type="button" (click)="restablecerContrasena()">
+        Restablecer contraseña
+      </button>
+    </div>
+
+    <h3>Materias</h3>
+    @if (materias().length) {
+      <mat-list>
+        @for (materia of materias(); track materia.nrc) {
+          <mat-list-item>
+            <span matListItemTitle>{{ materia.nombre }}</span>
+            <span matListItemLine>NRC {{ materia.nrc }} · {{ materia.nombre_docente }}</span>
+          </mat-list-item>
+        }
+      </mat-list>
+    } @else {
+      <p class="nota">No está inscrito en ninguna materia.</p>
+    }
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancelar</button>
+  <button mat-flat-button type="submit" form="formulario-alumno" [disabled]="guardando()">
+    {{ guardando() ? 'Guardando…' : 'Guardar' }}
+  </button>
+</mat-dialog-actions>

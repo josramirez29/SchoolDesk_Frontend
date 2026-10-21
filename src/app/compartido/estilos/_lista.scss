@@ -1,0 +1,41 @@
+// Estilos comunes de las pantallas de listas (alumnos, docentes, materias...).
+// Cada pantalla lo importa con: @use '.../compartido/estilos/lista';
+
+.encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+
+  h1 {
+    margin: 0;
+    font: var(--mat-sys-headline-small);
+  }
+}
+
+.buscador {
+  width: 100%;
+  max-width: 420px;
+}
+
+.tabla {
+  width: 100%;
+}
+
+.sin-datos {
+  padding: 24px 16px;
+  text-align: center;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.total {
+  margin-top: 8px;
+  font: var(--mat-sys-body-small);
+  color: var(--mat-sys-on-surface-variant);
+}
+
+.estado-inactivo {
+  color: var(--mat-sys-error);
+}

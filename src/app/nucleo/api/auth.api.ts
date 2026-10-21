@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { SIN_AVISO_DE_ERROR } from '../errores/errores';
-import { RespuestaLogin, Usuario } from './modelos';
+import { Rol } from '../sesion/roles';
+import { RespuestaLogin, Usuario, UsuarioEdicion, UsuarioNuevo } from './modelos';
 
 /** Llamadas a servicio-auth a través del gateway (/api/auth/...). */
 @Injectable({ providedIn: 'root' })
@@ -33,5 +34,23 @@ export class AuthApi {
       { contrasena_actual: contrasenaActual, contrasena_nueva: contrasenaNueva },
       { context },
     );
+  }
+
+  // --- Usuarios (admin) ---
+
+  listarUsuarios(rol?: Rol): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.url}/usuarios`, { params: rol ? { rol } : {} });
+  }
+
+  obtenerUsuario(usuario: string): Observable<Usuario> {
+    return this.http.get<Usuario>(`${this.url}/usuarios/${usuario}`);
+  }
+
+  crearUsuario(datos: UsuarioNuevo): Observable<Usuario> {
+    return this.http.post<Usuario>(`${this.url}/usuarios`, datos);
+  }
+
+  editarUsuario(usuario: string, cambios: UsuarioEdicion): Observable<Usuario> {
+    return this.http.patch<Usuario>(`${this.url}/usuarios/${usuario}`, cambios);
   }
 }

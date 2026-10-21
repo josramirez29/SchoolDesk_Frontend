@@ -1,0 +1,49 @@
+<header class="encabezado">
+  <h1>Alumnos</h1>
+  <button mat-flat-button (click)="nuevo()">
+    <mat-icon>person_add</mat-icon>
+    Nuevo alumno
+  </button>
+</header>
+
+<mat-form-field appearance="outline" class="buscador">
+  <mat-label>Buscar por nombre o matrícula</mat-label>
+  <input matInput [formControl]="busqueda" />
+  <mat-icon matSuffix>search</mat-icon>
+</mat-form-field>
+
+@if (cargando()) {
+  <mat-progress-bar mode="indeterminate" />
+}
+
+<table mat-table [dataSource]="alumnos()" class="tabla">
+  <ng-container matColumnDef="matricula">
+    <th mat-header-cell *matHeaderCellDef>Matrícula</th>
+    <td mat-cell *matCellDef="let alumno">{{ alumno.matricula }}</td>
+  </ng-container>
+  <ng-container matColumnDef="apellidos">
+    <th mat-header-cell *matHeaderCellDef>Apellidos</th>
+    <td mat-cell *matCellDef="let alumno">{{ alumno.apellidos }}</td>
+  </ng-container>
+  <ng-container matColumnDef="nombre">
+    <th mat-header-cell *matHeaderCellDef>Nombre</th>
+    <td mat-cell *matCellDef="let alumno">{{ alumno.nombre }}</td>
+  </ng-container>
+  <ng-container matColumnDef="acciones">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let alumno">
+      <button mat-icon-button (click)="editar(alumno)" aria-label="Editar alumno">
+        <mat-icon>edit</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+  <tr mat-row *matRowDef="let fila; columns: columnas"></tr>
+  <tr class="mat-row" *matNoDataRow>
+    <td class="sin-datos" [attr.colspan]="columnas.length">
+      {{ cargando() ? 'Cargando…' : 'No hay alumnos que coincidan con la búsqueda' }}
+    </td>
+  </tr>
+</table>
+<p class="total">{{ alumnos().length }} alumno(s)</p>
