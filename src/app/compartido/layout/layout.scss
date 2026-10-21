@@ -1,0 +1,44 @@
+.contenedor {
+  height: 100%;
+}
+
+.menu-lateral {
+  width: 240px;
+}
+
+.marca {
+  padding: 20px 16px 12px;
+  font: var(--mat-sys-title-large);
+  color: var(--mat-sys-primary);
+}
+
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--mat-sys-surface-container);
+}
+
+.espacio {
+  flex: 1;
+}
+
+.rol {
+  font: var(--mat-sys-title-medium);
+}
+
+.contenido {
+  padding: 24px;
+  max-width: 1200px;
+}
+
+// En celular, solo el ícono del usuario para que quepa la barra.
+@media (max-width: 599px) {
+  .nombre {
+    display: none;
+  }
+
+  .contenido {
+    padding: 16px;
+  }
+}

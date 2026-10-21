@@ -1,0 +1,15 @@
+.tarjeta {
+  max-width: 440px;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 16px;
+}
+
+.error {
+  margin: 0 0 12px;
+  color: var(--mat-sys-error);
+}

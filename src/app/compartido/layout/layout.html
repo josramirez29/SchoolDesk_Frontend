@@ -1,0 +1,56 @@
+<mat-sidenav-container class="contenedor">
+  <mat-sidenav
+    #menu
+    [mode]="esCelular() ? 'over' : 'side'"
+    [opened]="!esCelular()"
+    class="menu-lateral"
+  >
+    <div class="marca">SchoolDesk</div>
+    <mat-nav-list>
+      @for (opcion of opciones(); track opcion.ruta) {
+        <a
+          mat-list-item
+          [routerLink]="opcion.ruta"
+          routerLinkActive
+          #activa="routerLinkActive"
+          [activated]="activa.isActive"
+          (click)="esCelular() && menu.close()"
+        >
+          <mat-icon matListItemIcon>{{ opcion.icono }}</mat-icon>
+          <span matListItemTitle>{{ opcion.etiqueta }}</span>
+        </a>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar class="barra">
+      @if (esCelular()) {
+        <button mat-icon-button (click)="menu.toggle()" aria-label="Abrir el menú">
+          <mat-icon>menu</mat-icon>
+        </button>
+      }
+      <span class="rol">{{ nombreDelRol() }}</span>
+      <span class="espacio"></span>
+
+      <button mat-button [matMenuTriggerFor]="menuUsuario">
+        <mat-icon>account_circle</mat-icon>
+        <span class="nombre">{{ usuario()?.nombre }}</span>
+      </button>
+      <mat-menu #menuUsuario="matMenu">
+        <a mat-menu-item routerLink="contrasena">
+          <mat-icon>key</mat-icon>
+          <span>Cambiar contraseña</span>
+        </a>
+        <button mat-menu-item (click)="cerrarSesion()">
+          <mat-icon>logout</mat-icon>
+          <span>Cerrar sesión</span>
+        </button>
+      </mat-menu>
+    </mat-toolbar>
+
+    <main class="contenido">
+      <router-outlet />
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>

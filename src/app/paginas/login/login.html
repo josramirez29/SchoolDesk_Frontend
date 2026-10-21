@@ -1,0 +1,59 @@
+<div class="fondo">
+  <mat-card class="tarjeta" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>SchoolDesk</mat-card-title>
+      <mat-card-subtitle>Inicia sesión con tu matrícula o número de empleado</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      @if (motivo() === 'expirada') {
+        <p class="aviso">Tu sesión expiró. Vuelve a iniciar sesión.</p>
+      }
+
+      <form [formGroup]="formulario" (ngSubmit)="iniciarSesion()" class="formulario">
+        <mat-form-field appearance="outline">
+          <mat-label>Usuario</mat-label>
+          <input matInput formControlName="usuario" inputmode="numeric" autocomplete="username" />
+          <mat-icon matSuffix>badge</mat-icon>
+          @if (formulario.controls.usuario.hasError('required')) {
+            <mat-error>Escribe tu matrícula o número de empleado</mat-error>
+          } @else if (formulario.controls.usuario.hasError('pattern')) {
+            <mat-error>Deben ser 9 dígitos</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Contraseña</mat-label>
+          <input
+            matInput
+            formControlName="contrasena"
+            [type]="mostrarContrasena() ? 'text' : 'password'"
+            autocomplete="current-password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="mostrarContrasena.set(!mostrarContrasena())"
+            [attr.aria-label]="mostrarContrasena() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+          >
+            <mat-icon>{{ mostrarContrasena() ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (formulario.controls.contrasena.hasError('required')) {
+            <mat-error>Escribe tu contraseña</mat-error>
+          }
+        </mat-form-field>
+
+        @if (error()) {
+          <p class="error" role="alert">{{ error() }}</p>
+        }
+
+        <button mat-flat-button type="submit" [disabled]="enviando()">
+          {{ enviando() ? 'Entrando…' : 'Entrar' }}
+        </button>
+      </form>
+
+      <p class="ayuda">Si es tu primera vez, tu contraseña es tu mismo usuario.</p>
+    </mat-card-content>
+  </mat-card>
+</div>
