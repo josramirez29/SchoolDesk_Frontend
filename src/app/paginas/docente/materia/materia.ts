@@ -41,6 +41,7 @@ export class MateriaDocente implements OnInit {
     { etiqueta: 'Ponderaciones', ruta: 'ponderaciones' },
     { etiqueta: 'Calificaciones', ruta: 'calificaciones' },
     { etiqueta: 'Asistencia', ruta: 'asistencia' },
+    { etiqueta: 'Reporte', ruta: 'reporte' },
   ];
 
   ngOnInit(): void {

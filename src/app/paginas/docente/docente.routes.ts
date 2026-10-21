@@ -43,6 +43,10 @@ export default [
             loadComponent: () =>
               import('./materia/asistencia/sesion-en-vivo').then((m) => m.SesionEnVivo),
           },
+          {
+            path: 'reporte',
+            loadComponent: () => import('./materia/reporte/reporte').then((m) => m.Reporte),
+          },
         ],
       },
       {

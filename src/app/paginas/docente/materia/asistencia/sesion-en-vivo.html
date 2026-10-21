@@ -96,4 +96,6 @@
       <p class="error">{{ lectura.mensaje }}</p>
     }
   </div>
+  <!-- Se crea de nuevo cada vez que termina una sesión, así que siempre está al día. -->
+  <app-historial-asistencia [nrc]="nrc()" />
 }

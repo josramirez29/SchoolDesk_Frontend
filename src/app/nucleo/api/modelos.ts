@@ -171,3 +171,35 @@ export interface SesionResumen {
 export interface SesionDetalle extends SesionResumen {
   registros: RegistroAsistencia[]; // en orden de llegada
 }
+
+// --- Reporte de materia (academico + asistencia) ---
+
+export interface AsistenciaReporte {
+  presentes: number;
+  retardos: number;
+  faltas: number;
+  porcentaje: number | null; // null si todavía no hay sesiones
+}
+
+export interface FilaReporte {
+  matricula: string;
+  nombre: string;
+  apellidos: string;
+  promedio: number | null;
+  asistencia: AsistenciaReporte | null; // null si servicio-asistencia no respondió
+}
+
+export interface ResumenGrupo {
+  promedio_grupo: number | null;
+  aprobados: number;
+  reprobados: number;
+  sin_calificaciones: number;
+}
+
+export interface ReporteMateria {
+  materia: Materia;
+  asistencia_disponible: boolean; // false = degradación elegante: asistencia no respondió
+  total_sesiones: number | null;
+  resumen: ResumenGrupo;
+  alumnos: FilaReporte[];
+}

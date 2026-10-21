@@ -1,0 +1,108 @@
+@if (reporte(); as reporte) {
+  @if (!reporte.asistencia_disponible) {
+    <p class="aviso" role="status">
+      <mat-icon>cloud_off</mat-icon>
+      El servicio de asistencia no respondió: el reporte muestra solo las calificaciones. Intenta de
+      nuevo en unos minutos.
+    </p>
+  }
+
+  <div class="resumen">
+    <div class="dato">
+      <span class="valor">
+        {{
+          reporte.resumen.promedio_grupo === null
+            ? '—'
+            : (reporte.resumen.promedio_grupo | number: '1.1-1')
+        }}
+      </span>
+      <span class="etiqueta">Promedio del grupo</span>
+    </div>
+    <div class="dato">
+      <span class="valor">{{ reporte.resumen.aprobados }}</span>
+      <span class="etiqueta">Aprobados</span>
+    </div>
+    <div class="dato">
+      <span class="valor" [class.malo]="reporte.resumen.reprobados > 0">
+        {{ reporte.resumen.reprobados }}
+      </span>
+      <span class="etiqueta">Reprobados</span>
+    </div>
+    <div class="dato">
+      <span class="valor">{{ reporte.resumen.sin_calificaciones }}</span>
+      <span class="etiqueta">Sin calificaciones</span>
+    </div>
+    @if (reporte.asistencia_disponible) {
+      <div class="dato">
+        <span class="valor">{{ reporte.total_sesiones }}</span>
+        <span class="etiqueta">Sesiones de asistencia</span>
+      </div>
+    }
+    <span class="espacio"></span>
+    <button mat-stroked-button (click)="descargar()">
+      <mat-icon>download</mat-icon>
+      Descargar CSV
+    </button>
+  </div>
+
+  <table
+    mat-table
+    [dataSource]="filas"
+    matSort
+    matSortActive="alumno"
+    matSortDirection="asc"
+    class="tabla"
+  >
+    <ng-container matColumnDef="alumno">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alumno</th>
+      <td mat-cell *matCellDef="let fila">
+        {{ fila.apellidos }}, {{ fila.nombre }}
+        <span class="matricula">{{ fila.matricula }}</span>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="promedio">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Promedio</th>
+      <td mat-cell *matCellDef="let fila" [class.malo]="reprobado(fila.promedio)">
+        {{ fila.promedio === null ? '—' : (fila.promedio | number: '1.1-1') }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="presentes">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Presentes</th>
+      <td mat-cell *matCellDef="let fila">{{ fila.asistencia?.presentes ?? '—' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="retardos">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Retardos</th>
+      <td mat-cell *matCellDef="let fila">{{ fila.asistencia?.retardos ?? '—' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="faltas">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Faltas</th>
+      <td mat-cell *matCellDef="let fila">{{ fila.asistencia?.faltas ?? '—' }}</td>
+    </ng-container>
+    <ng-container matColumnDef="porcentaje">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>% asistencia</th>
+      <td
+        mat-cell
+        *matCellDef="let fila"
+        [class.malo]="asistenciaBaja(fila.asistencia?.porcentaje)"
+      >
+        {{
+          fila.asistencia?.porcentaje === null || fila.asistencia?.porcentaje === undefined
+            ? '—'
+            : (fila.asistencia.porcentaje | number: '1.0-1') + ' %'
+        }}
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let fila; columns: columnas"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="sin-datos" [attr.colspan]="columnas.length">No hay alumnos inscritos.</td>
+    </tr>
+  </table>
+  <p class="nota">
+    Promedio en escala 0–10 (aprobatorio: 6). Un retardo cuenta como asistencia; en rojo, promedios
+    reprobatorios y asistencia menor a 80 %.
+  </p>
+} @else {
+  <mat-progress-bar mode="indeterminate" />
+}

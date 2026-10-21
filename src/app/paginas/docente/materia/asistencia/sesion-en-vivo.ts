@@ -12,6 +12,7 @@ import { Subscription, filter, interval, switchMap, takeWhile, timer } from 'rxj
 import { confirmar } from '../../../../compartido/dialogo-confirmacion/dialogo-confirmacion';
 import { AsistenciaApi } from '../../../../nucleo/api/asistencia.api';
 import { RegistroAsistencia, SesionDetalle } from '../../../../nucleo/api/modelos';
+import { HistorialAsistencia } from './historial-asistencia';
 import { ErrorApi, mensajeDeError } from '../../../../nucleo/errores/errores';
 
 const SEGUNDOS_ENTRE_CONSULTAS = 3;
@@ -28,7 +29,7 @@ interface UltimaLectura {
  */
 @Component({
   selector: 'app-sesion-en-vivo',
-  imports: [DatePipe, MatButtonModule, MatIconModule, ZXingScannerModule],
+  imports: [DatePipe, HistorialAsistencia, MatButtonModule, MatIconModule, ZXingScannerModule],
   templateUrl: './sesion-en-vivo.html',
   styleUrl: './sesion-en-vivo.scss',
 })

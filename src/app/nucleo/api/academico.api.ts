@@ -15,6 +15,7 @@ import {
   Categoria,
   CategoriaEntrada,
   Concentrado,
+  ReporteMateria,
   Tarea,
 } from './modelos';
 import { subirCsv } from './subir-csv';
@@ -118,6 +119,13 @@ export class AcademicoApi {
   /** Guarda varias celdas a la vez (todas o ninguna) y devuelve el concentrado actualizado. */
   capturarCalificaciones(nrc: string, entradas: CalificacionEntrada[]): Observable<Concentrado> {
     return this.http.put<Concentrado>(`${this.url}/materias/${nrc}/calificaciones`, entradas);
+  }
+
+  // --- Reporte (admin o docente titular) ---
+
+  /** Calificaciones de academico + asistencia de servicio-asistencia, en un solo reporte. */
+  obtenerReporte(nrc: string): Observable<ReporteMateria> {
+    return this.http.get<ReporteMateria>(`${this.url}/materias/${nrc}/reporte`);
   }
 
   // --- Importación (admin) ---
