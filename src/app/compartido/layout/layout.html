@@ -5,7 +5,10 @@
     [opened]="!esCelular()"
     class="menu-lateral"
   >
-    <div class="marca">SchoolDesk</div>
+    <!-- El logo lleva al inicio; la raíz redirige según el rol. -->
+    <a routerLink="/" class="marca">
+      <img [src]="logo()" alt="SchoolDesk" />
+    </a>
     <mat-nav-list>
       @for (opcion of opciones(); track opcion.ruta) {
         <a

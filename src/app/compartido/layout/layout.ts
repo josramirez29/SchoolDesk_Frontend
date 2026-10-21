@@ -12,6 +12,7 @@ import { map } from 'rxjs';
 
 import { Rol } from '../../nucleo/sesion/roles';
 import { ServicioSesion } from '../../nucleo/sesion/servicio-sesion';
+import { ServicioTema } from '../../nucleo/tema/servicio-tema';
 import { BotonTema } from '../boton-tema/boton-tema';
 
 /** Una opción del menú lateral. */
@@ -53,6 +54,7 @@ const NOMBRE_DEL_ROL: Record<Rol, string> = {
 export class Layout {
   private readonly sesion = inject(ServicioSesion);
   private readonly router = inject(Router);
+  private readonly servicioTema = inject(ServicioTema);
 
   readonly opciones = input.required<OpcionMenu[]>();
 
@@ -61,6 +63,11 @@ export class Layout {
     const rol = this.sesion.rol();
     return rol ? NOMBRE_DEL_ROL[rol] : '';
   });
+
+  /** Logo azul sobre fondo claro; blanco sobre fondo oscuro. */
+  readonly logo = computed(() =>
+    this.servicioTema.tema() === 'oscuro' ? 'logo/logo-negativo.svg' : 'logo/logo-positivo.svg',
+  );
 
   /** En celular el menú se abre encima del contenido; en pantallas grandes queda fijo. */
   readonly esCelular = toSignal(

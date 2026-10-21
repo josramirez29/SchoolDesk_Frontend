@@ -7,9 +7,15 @@
 }
 
 .marca {
-  padding: 20px 16px 12px;
-  font: var(--mat-sys-title-large);
-  color: var(--mat-sys-primary);
+  display: block;
+  padding: 16px 16px 8px;
+
+  img {
+    display: block;
+    width: 140px;
+    height: auto;
+    margin: 0 auto;
+  }
 }
 
 .barra {
