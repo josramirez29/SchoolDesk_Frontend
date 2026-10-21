@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 
+import { BotonTema } from '../../compartido/boton-tema/boton-tema';
 import { AuthApi } from '../../nucleo/api/auth.api';
 import { mensajeDeError } from '../../nucleo/errores/errores';
 import { INICIO_POR_ROL } from '../../nucleo/sesion/roles';
@@ -16,6 +17,7 @@ import { ServicioSesion } from '../../nucleo/sesion/servicio-sesion';
 @Component({
   selector: 'app-login',
   imports: [
+    BotonTema,
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,

@@ -12,6 +12,7 @@ import { map } from 'rxjs';
 
 import { Rol } from '../../nucleo/sesion/roles';
 import { ServicioSesion } from '../../nucleo/sesion/servicio-sesion';
+import { BotonTema } from '../boton-tema/boton-tema';
 
 /** Una opción del menú lateral. */
 export interface OpcionMenu {
@@ -35,6 +36,7 @@ const NOMBRE_DEL_ROL: Record<Rol, string> = {
 @Component({
   selector: 'app-layout',
   imports: [
+    BotonTema,
     MatButtonModule,
     MatIconModule,
     MatListModule,
