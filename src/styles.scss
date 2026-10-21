@@ -19,6 +19,19 @@ html {
       density: 0,
     )
   );
+
+  // Títulos en seminegritas. Material los trae con peso 400; aquí se cambian una
+  // sola vez y todas las pantallas que usan estos tokens los heredan.
+  @include mat.theme-overrides(
+    (
+      headline-medium: 600 1.75rem / 2.25rem Roboto,
+      headline-medium-weight: 600,
+      headline-small: 600 1.5rem / 2rem Roboto,
+      headline-small-weight: 600,
+      title-large: 600 1.375rem / 1.75rem Roboto,
+      title-large-weight: 600,
+    )
+  );
 }
 
 body {
