@@ -54,20 +54,15 @@ const NOMBRE_DEL_ROL: Record<Rol, string> = {
 export class Layout {
   private readonly sesion = inject(ServicioSesion);
   private readonly router = inject(Router);
-  private readonly servicioTema = inject(ServicioTema);
 
   readonly opciones = input.required<OpcionMenu[]>();
 
   readonly usuario = this.sesion.usuario;
+  readonly logo = inject(ServicioTema).logo;
   readonly nombreDelRol = computed(() => {
     const rol = this.sesion.rol();
     return rol ? NOMBRE_DEL_ROL[rol] : '';
   });
-
-  /** Logo azul sobre fondo claro; blanco sobre fondo oscuro. */
-  readonly logo = computed(() =>
-    this.servicioTema.tema() === 'oscuro' ? 'logo/logo-negativo.svg' : 'logo/logo-positivo.svg',
-  );
 
   /** En celular el menú se abre encima del contenido; en pantallas grandes queda fijo. */
   readonly esCelular = toSignal(

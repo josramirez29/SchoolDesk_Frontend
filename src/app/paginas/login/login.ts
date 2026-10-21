@@ -13,6 +13,7 @@ import { AuthApi } from '../../nucleo/api/auth.api';
 import { mensajeDeError } from '../../nucleo/errores/errores';
 import { INICIO_POR_ROL } from '../../nucleo/sesion/roles';
 import { ServicioSesion } from '../../nucleo/sesion/servicio-sesion';
+import { ServicioTema } from '../../nucleo/tema/servicio-tema';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class Login {
   private readonly authApi = inject(AuthApi);
   private readonly sesion = inject(ServicioSesion);
   private readonly router = inject(Router);
+  readonly logo = inject(ServicioTema).logo;
 
   /** Llega de la URL (/login?motivo=expirada) cuando el interceptor cerró la sesión. */
   readonly motivo = input<string>();

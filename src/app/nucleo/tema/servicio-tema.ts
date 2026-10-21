@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Injectable, effect, inject, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 
 export type Tema = 'claro' | 'oscuro';
 
@@ -19,6 +19,11 @@ export class ServicioTema {
   private readonly documento = inject(DOCUMENT);
 
   readonly tema = signal<Tema>(leerTemaGuardado() ?? temaDelSistema());
+
+  /** Logo azul sobre fondo claro y blanco sobre fondo oscuro. */
+  readonly logo = computed(() =>
+    this.tema() === 'oscuro' ? 'logo/logo-negativo.svg' : 'logo/logo-positivo.svg',
+  );
 
   constructor() {
     effect(() => {

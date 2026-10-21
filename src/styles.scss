@@ -4,16 +4,19 @@
 // Learn more about theming and how to use it for your application's
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
+// Paleta propia, generada con: ng generate @angular/material:theme-color
+@use 'theme-colors' as paleta;
 
 html {
   height: 100%;
+
   // Tema claro por defecto; ServicioTema lo cambia a `dark` en <html>.
   color-scheme: light;
   @include mat.theme(
     (
       color: (
-        primary: mat.$azure-palette,
-        tertiary: mat.$blue-palette,
+        primary: paleta.$primary-palette,
+        tertiary: paleta.$tertiary-palette,
       ),
       typography: Roboto,
       density: 0,

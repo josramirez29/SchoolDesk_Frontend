@@ -20,6 +20,12 @@
   max-width: 420px;
 }
 
+// En celular la tabla no cabe: se desliza de lado dentro de su contenedor,
+// sin mover el resto de la página.
+.contenedor-tabla {
+  overflow-x: auto;
+}
+
 .tabla {
   width: 100%;
 }

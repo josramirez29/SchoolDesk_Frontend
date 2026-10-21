@@ -5,7 +5,7 @@
   place-items: center;
   padding: 16px;
   box-sizing: border-box;
-  background: var(--mat-sys-surface-container-low);
+  background: var(--mat-sys-surface-container);
 }
 
 .boton-tema {
@@ -14,9 +14,42 @@
   right: 8px;
 }
 
+// Borde "neón": una línea azul eléctrico y un resplandor del mismo color.
+// Los dos azules son tonos de nuestra paleta: el 40 en claro y el 60 en oscuro
+// (el primary de tema oscuro es demasiado pálido para verse como neón).
 .tarjeta {
+  --neon: light-dark(#2151da, #6989ff);
+
   width: 100%;
   max-width: 400px;
+  padding: 16px 8px 8px;
+  border-radius: 20px;
+  border: 1.5px solid var(--neon);
+  box-shadow:
+    0 0 4px var(--neon),
+    0 0 18px color-mix(in srgb, var(--neon) 55%, transparent),
+    0 0 48px color-mix(in srgb, var(--neon) 30%, transparent);
+  --mat-card-elevated-container-color: var(--mat-sys-surface);
+}
+
+.encabezado {
+  text-align: center;
+  padding: 0 16px;
+
+  .logo {
+    width: 120px;
+    height: auto;
+  }
+
+  h1 {
+    margin: 12px 0 4px;
+    font: var(--mat-sys-headline-small);
+  }
+
+  p {
+    margin: 0;
+    color: var(--mat-sys-on-surface-variant);
+  }
 }
 
 .formulario {
@@ -41,6 +74,7 @@
 
 .ayuda {
   margin: 16px 0 0;
+  text-align: center;
   font: var(--mat-sys-body-small);
   color: var(--mat-sys-on-surface-variant);
 }

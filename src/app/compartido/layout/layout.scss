@@ -1,14 +1,35 @@
+@use '@angular/material' as mat;
+
 .contenedor {
   height: 100%;
+
+  // El contenido va sobre un fondo apenas azulado, para que las tarjetas
+  // (blancas) resalten.
+  @include mat.sidenav-overrides(
+    (
+      content-background-color: var(--mat-sys-surface-container-low),
+    )
+  );
 }
 
 .menu-lateral {
-  width: 240px;
+  width: 248px;
+  // Sigue al tema: blanco en claro y oscuro en oscuro, con una línea que lo separa.
+  border-right: 1px solid var(--mat-sys-outline-variant);
+
+  // Recto: es un menú fijo, no un panel flotante.
+  @include mat.sidenav-overrides(
+    (
+      container-shape: 0,
+    )
+  );
 }
 
 .marca {
   display: block;
-  padding: 16px 16px 8px;
+  padding: 24px 16px 16px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
 
   img {
     display: block;
@@ -22,7 +43,8 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  background: var(--mat-sys-surface-container);
+  background: var(--mat-sys-surface);
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
 .espacio {

@@ -19,7 +19,18 @@ h1 {
 
   mat-card {
     height: 100%;
+    padding-bottom: 16px;
     transition: background 0.15s;
+  }
+
+  // Tamaños pensados para una tarjeta compacta (los de Material son para
+  // tarjetas grandes): los mismos que en las tarjetas del alumno.
+  mat-card-title {
+    font: var(--mat-sys-title-medium);
+  }
+
+  mat-card-subtitle {
+    font: var(--mat-sys-body-small);
   }
 
   &:hover mat-card,

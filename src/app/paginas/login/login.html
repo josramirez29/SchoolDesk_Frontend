@@ -1,11 +1,12 @@
 <div class="fondo">
   <app-boton-tema class="boton-tema" />
 
-  <mat-card class="tarjeta" appearance="outlined">
-    <mat-card-header>
-      <mat-card-title>SchoolDesk</mat-card-title>
-      <mat-card-subtitle>Inicia sesión con tu matrícula o número de empleado</mat-card-subtitle>
-    </mat-card-header>
+  <mat-card class="tarjeta" appearance="raised">
+    <div class="encabezado">
+      <img [src]="logo()" alt="SchoolDesk" class="logo" />
+      <h1>Inicia sesión</h1>
+      <p>Usa tu matrícula o tu número de empleado</p>
+    </div>
 
     <mat-card-content>
       @if (motivo() === 'expirada') {
