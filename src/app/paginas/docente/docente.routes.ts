@@ -38,6 +38,11 @@ export default [
             // Avisa antes de salir si hay calificaciones capturadas sin guardar.
             canDeactivate: [sinCambiosPendientesGuard],
           },
+          {
+            path: 'asistencia',
+            loadComponent: () =>
+              import('./materia/asistencia/sesion-en-vivo').then((m) => m.SesionEnVivo),
+          },
         ],
       },
       {

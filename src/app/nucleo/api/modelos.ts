@@ -144,3 +144,30 @@ export interface CalificacionEntrada {
   tarea_id: number;
   puntos: number | null;
 }
+
+// --- servicio-asistencia ---
+
+export type EstadoAsistencia = 'PRESENTE' | 'RETARDO';
+
+export interface RegistroAsistencia {
+  matricula: string;
+  nombre_alumno: string;
+  estado: EstadoAsistencia;
+  registrado_en: string; // fecha ISO en UTC
+}
+
+export interface SesionResumen {
+  id: number;
+  nrc: string;
+  iniciada_en: string;
+  termina_en: string;
+  cerrada_en: string | null;
+  activa: boolean;
+  segundos_restantes: number; // calculado por el servidor con su propio reloj
+  presentes: number;
+  retardos: number;
+}
+
+export interface SesionDetalle extends SesionResumen {
+  registros: RegistroAsistencia[]; // en orden de llegada
+}

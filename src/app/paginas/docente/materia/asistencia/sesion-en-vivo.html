@@ -1,0 +1,99 @@
+@if (cargando()) {
+  <p class="nota">Buscando si hay una sesión abierta…</p>
+} @else if (sesion(); as sesion) {
+  <div class="encabezado-sesion">
+    @if (activa()) {
+      <div
+        class="reloj"
+        role="timer"
+        [attr.aria-label]="'Quedan ' + segundosRestantes() + ' segundos'"
+      >
+        <mat-icon>timer</mat-icon>
+        {{ formatoReloj(segundosRestantes()) }}
+      </div>
+      <span class="conteo">
+        {{ sesion.presentes }} presente(s) · {{ sesion.retardos }} retardo(s)
+      </span>
+      <span class="espacio"></span>
+      <button mat-stroked-button (click)="cerrar()">
+        <mat-icon>stop_circle</mat-icon>
+        Cerrar sesión
+      </button>
+    } @else {
+      <p class="terminada">
+        La sesión terminó: {{ sesion.presentes }} presente(s) y {{ sesion.retardos }} retardo(s).
+      </p>
+      <span class="espacio"></span>
+      <button mat-flat-button (click)="nuevaSesion()">Listo</button>
+    }
+  </div>
+
+  <div class="columnas">
+    @if (activa()) {
+      <section class="escaner">
+        <h2>Escanea el QR del alumno</h2>
+        <zxing-scanner
+          [formats]="formatos"
+          (scanSuccess)="alLeerQr($event)"
+          (permissionResponse)="sinCamara.set(!$event)"
+          (camerasNotFound)="sinCamara.set(true)"
+        />
+        @if (sinCamara()) {
+          <p class="error">
+            No se pudo usar la cámara. Revisa que el navegador tenga permiso; solo funciona en
+            localhost o con HTTPS.
+          </p>
+        }
+
+        @if (ultimaLectura(); as lectura) {
+          <p class="lectura" [class.correcta]="lectura.correcta" role="status">
+            <mat-icon>{{ lectura.correcta ? 'check_circle' : 'error' }}</mat-icon>
+            {{ lectura.mensaje }}
+          </p>
+        }
+
+        <details>
+          <summary>¿Problemas con la cámara?</summary>
+          <div class="manual">
+            <input
+              #codigo
+              placeholder="Pega el código del QR"
+              (keydown.enter)="ingresarManualmente(codigo)"
+              aria-label="Código del QR"
+            />
+            <button mat-stroked-button (click)="ingresarManualmente(codigo)">Registrar</button>
+          </div>
+        </details>
+      </section>
+    }
+
+    <section class="registrados">
+      <h2>Registrados ({{ sesion.registros.length }})</h2>
+      @for (registro of sesion.registros; track registro.matricula) {
+        <div class="registro">
+          <span class="estado" [class.retardo]="registro.estado === 'RETARDO'">
+            {{ registro.estado === 'PRESENTE' ? 'Presente' : 'Retardo' }}
+          </span>
+          <span class="nombre">{{ registro.nombre_alumno }}</span>
+          <span class="hora">{{ registro.registrado_en | date: 'HH:mm:ss' }}</span>
+        </div>
+      } @empty {
+        <p class="nota">Nadie se ha registrado todavía.</p>
+      }
+    </section>
+  </div>
+} @else {
+  <div class="inicio">
+    <mat-icon class="icono-grande">qr_code_scanner</mat-icon>
+    <p>
+      Al iniciar la sesión, los alumnos pueden mostrar su QR durante 10 minutos. Los primeros 5
+      minutos cuentan como asistencia; después, como retardo.
+    </p>
+    <button mat-flat-button (click)="iniciar()" [disabled]="abriendo()">
+      {{ abriendo() ? 'Iniciando…' : 'Iniciar sesión de asistencia' }}
+    </button>
+    @if (ultimaLectura(); as lectura) {
+      <p class="error">{{ lectura.mensaje }}</p>
+    }
+  </div>
+}

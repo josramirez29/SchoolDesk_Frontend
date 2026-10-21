@@ -40,6 +40,7 @@ export class MateriaDocente implements OnInit {
   readonly pestanas: Pestana[] = [
     { etiqueta: 'Ponderaciones', ruta: 'ponderaciones' },
     { etiqueta: 'Calificaciones', ruta: 'calificaciones' },
+    { etiqueta: 'Asistencia', ruta: 'asistencia' },
   ];
 
   ngOnInit(): void {
