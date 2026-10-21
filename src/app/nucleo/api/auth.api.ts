@@ -5,7 +5,14 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { SIN_AVISO_DE_ERROR } from '../errores/errores';
 import { Rol } from '../sesion/roles';
-import { RespuestaLogin, Usuario, UsuarioEdicion, UsuarioNuevo } from './modelos';
+import {
+  RespuestaLogin,
+  ResultadoImportacion,
+  Usuario,
+  UsuarioEdicion,
+  UsuarioNuevo,
+} from './modelos';
+import { subirCsv } from './subir-csv';
 
 /** Llamadas a servicio-auth a través del gateway (/api/auth/...). */
 @Injectable({ providedIn: 'root' })
@@ -52,5 +59,13 @@ export class AuthApi {
 
   editarUsuario(usuario: string, cambios: UsuarioEdicion): Observable<Usuario> {
     return this.http.patch<Usuario>(`${this.url}/usuarios/${usuario}`, cambios);
+  }
+
+  // --- Importación (admin) ---
+
+  readonly urlPlantillaDocentes = `${this.url}/importar/docentes/plantilla`;
+
+  importarDocentes(archivo: File): Observable<ResultadoImportacion> {
+    return subirCsv(this.http, `${this.url}/importar/docentes`, archivo);
   }
 }

@@ -1,0 +1,48 @@
+<h1>Importar desde CSV</h1>
+<p class="intro">
+  Cada importación es independiente: sube solo lo que necesites. Llena la plantilla en Excel y
+  guárdala como CSV. Si un archivo tiene errores no se guarda nada y verás cada fila que hay que
+  corregir. Lo que ya existía se omite, así que puedes subir el mismo archivo otra vez sin duplicar.
+</p>
+<p class="intro">
+  Lo único que importa es que exista lo que cada archivo necesita: las materias necesitan a sus
+  docentes, y las inscripciones necesitan a los alumnos y las materias.
+</p>
+
+<mat-tab-group mat-stretch-tabs="false" animationDuration="0ms">
+  <mat-tab label="Docentes">
+    <app-panel-importacion
+      [descripcion]="docentes.descripcion"
+      [columnas]="docentes.columnas"
+      [urlPlantilla]="docentes.urlPlantilla"
+      [importar]="docentes.importar"
+    />
+  </mat-tab>
+
+  <mat-tab label="Alumnos">
+    <app-panel-importacion
+      [descripcion]="alumnos.descripcion"
+      [columnas]="alumnos.columnas"
+      [urlPlantilla]="alumnos.urlPlantilla"
+      [importar]="alumnos.importar"
+    />
+  </mat-tab>
+
+  <mat-tab label="Materias">
+    <app-panel-importacion
+      [descripcion]="materias.descripcion"
+      [columnas]="materias.columnas"
+      [urlPlantilla]="materias.urlPlantilla"
+      [importar]="materias.importar"
+    />
+  </mat-tab>
+
+  <mat-tab label="Inscripciones">
+    <app-panel-importacion
+      [descripcion]="inscripciones.descripcion"
+      [columnas]="inscripciones.columnas"
+      [urlPlantilla]="inscripciones.urlPlantilla"
+      [importar]="inscripciones.importar"
+    />
+  </mat-tab>
+</mat-tab-group>

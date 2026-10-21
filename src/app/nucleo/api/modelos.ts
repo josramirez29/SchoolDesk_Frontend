@@ -81,3 +81,21 @@ export interface MateriaNueva {
 
 /** Edición parcial. El NRC no se edita: es el identificador que usan los demás servicios. */
 export type MateriaEdicion = Partial<Omit<MateriaNueva, 'nrc'>>;
+
+// --- Importación por CSV (igual en auth y academico: comun/importacion.py) ---
+
+export interface FilaOmitida {
+  fila: number; // número de fila como lo muestra Excel (la 1 es el encabezado)
+  motivo: string;
+}
+
+export interface ResultadoImportacion {
+  creados: number;
+  omitidos: FilaOmitida[];
+}
+
+/** Viene en el campo "filas" del error ARCHIVO_CON_ERRORES (422). */
+export interface ErrorDeFila {
+  fila: number;
+  mensaje: string;
+}

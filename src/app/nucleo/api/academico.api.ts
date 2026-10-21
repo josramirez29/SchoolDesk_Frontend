@@ -10,7 +10,12 @@ import {
   Materia,
   MateriaEdicion,
   MateriaNueva,
+  ResultadoImportacion,
 } from './modelos';
+import { subirCsv } from './subir-csv';
+
+/** Lo que se puede importar en academico (cada uno es un CSV distinto). */
+export type TipoImportacion = 'alumnos' | 'materias' | 'inscripciones';
 
 /** Llamadas a servicio-academico a través del gateway (/api/academico/...). */
 @Injectable({ providedIn: 'root' })
@@ -72,5 +77,15 @@ export class AcademicoApi {
 
   darDeBaja(nrc: string, matricula: string): Observable<void> {
     return this.http.delete<void>(`${this.url}/materias/${nrc}/alumnos/${matricula}`);
+  }
+
+  // --- Importación (admin) ---
+
+  urlPlantilla(tipo: TipoImportacion): string {
+    return `${this.url}/importar/${tipo}/plantilla`;
+  }
+
+  importar(tipo: TipoImportacion, archivo: File): Observable<ResultadoImportacion> {
+    return subirCsv(this.http, `${this.url}/importar/${tipo}`, archivo);
   }
 }

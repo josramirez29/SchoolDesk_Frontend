@@ -34,6 +34,10 @@ export default [
         loadComponent: () => import('./materias/detalle-materia').then((m) => m.DetalleMateria),
       },
       {
+        path: 'importar',
+        loadComponent: () => import('./importar/importar').then((m) => m.Importar),
+      },
+      {
         path: 'contrasena',
         loadComponent: () =>
           import('../cuenta/cambiar-contrasena').then((m) => m.CambiarContrasena),

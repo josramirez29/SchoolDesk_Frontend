@@ -1,0 +1,68 @@
+<p>{{ descripcion() }}</p>
+<p class="columnas">
+  Columnas:
+  @for (columna of columnas(); track columna) {
+    <code>{{ columna }}</code>
+  }
+</p>
+
+<div class="acciones">
+  <!-- La plantilla es pública: un enlace normal basta para descargarla. -->
+  <a mat-stroked-button [href]="urlPlantilla()" download>
+    <mat-icon>download</mat-icon>
+    Descargar plantilla
+  </a>
+
+  <input #selector type="file" accept=".csv,text/csv" hidden (change)="elegirArchivo($event)" />
+  <button mat-stroked-button type="button" (click)="selector.click()">
+    <mat-icon>attach_file</mat-icon>
+    {{ archivo() ? archivo()!.name : 'Elegir archivo CSV' }}
+  </button>
+
+  <button mat-flat-button type="button" (click)="subir()" [disabled]="!archivo() || enviando()">
+    <mat-icon>upload</mat-icon>
+    {{ enviando() ? 'Importando…' : 'Importar' }}
+  </button>
+</div>
+
+@if (resultado(); as resultado) {
+  <div class="resultado exito" role="status">
+    <strong>{{ resultado.creados }} registro(s) creado(s).</strong>
+    @if (resultado.omitidos.length) {
+      {{ resultado.omitidos.length }} omitido(s) porque ya existían.
+    }
+  </div>
+  @if (resultado.omitidos.length) {
+    <details>
+      <summary>Ver filas omitidas</summary>
+      <ul>
+        @for (omitida of resultado.omitidos; track omitida.fila) {
+          <li>Fila {{ omitida.fila }}: {{ omitida.motivo }}</li>
+        }
+      </ul>
+    </details>
+  }
+}
+
+@if (error()) {
+  <div class="resultado fallo" role="alert">
+    <strong>{{ error() }}</strong>
+    @if (filasConError().length) {
+      Corrige estas filas en tu archivo y vuelve a importarlo:
+    }
+  </div>
+  @if (filasConError().length) {
+    <table mat-table [dataSource]="filasConError()" class="tabla-errores">
+      <ng-container matColumnDef="fila">
+        <th mat-header-cell *matHeaderCellDef>Fila</th>
+        <td mat-cell *matCellDef="let error">{{ error.fila }}</td>
+      </ng-container>
+      <ng-container matColumnDef="mensaje">
+        <th mat-header-cell *matHeaderCellDef>Problema</th>
+        <td mat-cell *matCellDef="let error">{{ error.mensaje }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['fila', 'mensaje']"></tr>
+      <tr mat-row *matRowDef="let fila; columns: ['fila', 'mensaje']"></tr>
+    </table>
+  }
+}

@@ -1,0 +1,18 @@
+h1 {
+  margin: 0 0 8px;
+  font: var(--mat-sys-headline-small);
+}
+
+.intro {
+  max-width: 720px;
+  color: var(--mat-sys-on-surface-variant);
+}
+
+mat-tab-group {
+  margin-top: 8px;
+}
+
+app-panel-importacion {
+  display: block;
+  padding: 16px 0;
+}
